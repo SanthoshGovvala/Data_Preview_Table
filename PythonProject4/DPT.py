@@ -17,19 +17,19 @@ def main():
         selected_columns = st.multiselect("Select columns to include", df.columns.tolist(), default=df.columns.tolist())
         df = df[selected_columns]
 
-        # Sorting options
+
         sort_column = st.selectbox("Select column to sort by", df.columns.tolist())
         sort_ascending = st.radio("Sort order", ("Ascending", "Descending"))
         df = df.sort_values(by=sort_column, ascending=(sort_ascending == "Ascending"))
 
-        # ML-based feature scaling
+
         if st.checkbox("Apply Standard Scaling"):
             scaler = StandardScaler()
             df_scaled = pd.DataFrame(scaler.fit_transform(df.select_dtypes(include=['float64', 'int64'])),
                                      columns=df.select_dtypes(include=['float64', 'int64']).columns)
             df.update(df_scaled)
 
-        # PCA for dimensionality reduction
+
         if st.checkbox("Apply PCA"):
             n_components = st.slider("Select number of components", 1, min(df.shape[1], 5), 2)
             pca = PCA(n_components=n_components)
